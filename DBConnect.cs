@@ -8,7 +8,7 @@ using System.IO;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Drawing;
-
+using Mysqlx;
 
 namespace therapy_management_gui
 {
@@ -21,7 +21,7 @@ namespace therapy_management_gui
         }
 
         private string server;
-        private string port;
+        private uint port;
         private string database;
         private string uid;
         private string password;
@@ -31,22 +31,30 @@ namespace therapy_management_gui
         {
             server = Constants.MYSQL_INSTANCE_HOST;
             uid = Constants.MYSQL_INSTANCE_UID;
+            port = Constants.MYSQL_INSTANCE_PORT;
             password = Constants.MYSQL_INSTANCE_PASSWORD;
             database = Constants.MYSQL_INSTANCE_DATABASE;
 
             Initialize();
         }
 
-        //Initialize values
+        // Initialize values
         private void Initialize()
         {
-            string connectionString = "Database=" + database + ";" + "Server=" + server + ";" + "User Id=" + uid + ";" + "password=" + password + ";";
-            //":"+port +
-            connection = new MySqlConnection(connectionString);
+            var builder = new MySqlConnectionStringBuilder
+            {
+                Server = server,
+                UserID = uid,
+                Password = password,
+                Port = port,
+                Database = database
+            };
+
+            connection = new MySqlConnection(builder.ConnectionString);
         }
 
 
-        //open connection to database
+        // open connection to database
         public bool OpenConnection()
         {
             try
@@ -60,17 +68,9 @@ namespace therapy_management_gui
                 //The two most common error numbers when connecting are as follows:
                 //0: Cannot connect to server.
                 //1045: Invalid user name and/or password.
-                switch (ex.Number)
-                {
-                    case 0:
-                        MessageBox.Show("Cannot connect to server.\n" + ex.Message);
-                        break;
-
-                    case 1045:
-                        MessageBox.Show("Invalid username/password, please try again");
-                        break;
-                }
-                return false;
+                
+               MessageBox.Show(ex.Message);
+               return false;
             }
         }
 
@@ -167,8 +167,6 @@ namespace therapy_management_gui
             }
         }
 
-
-
         public DataTable Select(String query)
         {
 
@@ -186,16 +184,14 @@ namespace therapy_management_gui
 
                 //close Connection
                 this.CloseConnection();
-                return dt;
             }
-            else return dt;
+
+            else {
+                MessageBox.Show("Keine Connection");
+            };
+                return dt;
 
         }
-
-
-
-
-
 
         //Count statement
         public int Count()
