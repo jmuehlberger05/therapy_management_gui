@@ -35,5 +35,10 @@ namespace therapy_management_gui
                 dgv_patients.DataSource = patients;
             }
         }
+
+        private void btn_refresh_cases_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

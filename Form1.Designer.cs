@@ -33,12 +33,18 @@
             this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.btn_refresh_patients = new System.Windows.Forms.Button();
             this.dgv_patients = new System.Windows.Forms.DataGridView();
             this.label2 = new System.Windows.Forms.Label();
-            this.btn_refresh_patients = new System.Windows.Forms.Button();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.btn_refresh_cases = new System.Windows.Forms.Button();
+            this.dgv_cases = new System.Windows.Forms.DataGridView();
+            this.label3 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_patients)).BeginInit();
+            this.panel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_cases)).BeginInit();
             this.SuspendLayout();
             // 
             // lbl_title
@@ -92,8 +98,19 @@
             this.panel3.Size = new System.Drawing.Size(800, 908);
             this.panel3.TabIndex = 3;
             // 
+            // btn_refresh_patients
+            // 
+            this.btn_refresh_patients.Location = new System.Drawing.Point(636, 30);
+            this.btn_refresh_patients.Name = "btn_refresh_patients";
+            this.btn_refresh_patients.Size = new System.Drawing.Size(129, 49);
+            this.btn_refresh_patients.TabIndex = 4;
+            this.btn_refresh_patients.Text = "refresh";
+            this.btn_refresh_patients.UseVisualStyleBackColor = true;
+            this.btn_refresh_patients.Click += new System.EventHandler(this.btn_refresh_patients_Click);
+            // 
             // dgv_patients
             // 
+            this.dgv_patients.BackgroundColor = System.Drawing.Color.White;
             this.dgv_patients.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_patients.Location = new System.Drawing.Point(38, 103);
             this.dgv_patients.Name = "dgv_patients";
@@ -113,21 +130,55 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Patienten";
             // 
-            // btn_refresh_patients
+            // panel4
             // 
-            this.btn_refresh_patients.Location = new System.Drawing.Point(636, 30);
-            this.btn_refresh_patients.Name = "btn_refresh_patients";
-            this.btn_refresh_patients.Size = new System.Drawing.Size(129, 49);
-            this.btn_refresh_patients.TabIndex = 4;
-            this.btn_refresh_patients.Text = "refresh";
-            this.btn_refresh_patients.UseVisualStyleBackColor = true;
-            this.btn_refresh_patients.Click += new System.EventHandler(this.btn_refresh_patients_Click);
+            this.panel4.BackColor = System.Drawing.Color.White;
+            this.panel4.Controls.Add(this.btn_refresh_cases);
+            this.panel4.Controls.Add(this.dgv_cases);
+            this.panel4.Controls.Add(this.label3);
+            this.panel4.Location = new System.Drawing.Point(1011, 146);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(800, 908);
+            this.panel4.TabIndex = 5;
+            // 
+            // btn_refresh_cases
+            // 
+            this.btn_refresh_cases.Location = new System.Drawing.Point(636, 30);
+            this.btn_refresh_cases.Name = "btn_refresh_cases";
+            this.btn_refresh_cases.Size = new System.Drawing.Size(129, 49);
+            this.btn_refresh_cases.TabIndex = 4;
+            this.btn_refresh_cases.Text = "refresh";
+            this.btn_refresh_cases.UseVisualStyleBackColor = true;
+            this.btn_refresh_cases.Click += new System.EventHandler(this.btn_refresh_cases_Click);
+            // 
+            // dgv_cases
+            // 
+            this.dgv_cases.BackgroundColor = System.Drawing.Color.White;
+            this.dgv_cases.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_cases.Location = new System.Drawing.Point(38, 103);
+            this.dgv_cases.Name = "dgv_cases";
+            this.dgv_cases.RowHeadersWidth = 82;
+            this.dgv_cases.RowTemplate.Height = 33;
+            this.dgv_cases.Size = new System.Drawing.Size(727, 774);
+            this.dgv_cases.TabIndex = 3;
+            // 
+            // label3
+            // 
+            this.label3.AutoEllipsis = true;
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(29, 29);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(272, 50);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Krankheitsfälle";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1840, 1079);
+            this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
@@ -139,6 +190,9 @@
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_patients)).EndInit();
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_cases)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -153,6 +207,10 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridView dgv_patients;
         private System.Windows.Forms.Button btn_refresh_patients;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Button btn_refresh_cases;
+        private System.Windows.Forms.DataGridView dgv_cases;
+        private System.Windows.Forms.Label label3;
     }
 }
 

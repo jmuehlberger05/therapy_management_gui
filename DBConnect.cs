@@ -38,7 +38,7 @@ namespace therapy_management_gui
             Initialize();
         }
 
-        // Initialize values
+        // Initialize Connection
         private void Initialize()
         {
             var builder = new MySqlConnectionStringBuilder
@@ -47,14 +47,23 @@ namespace therapy_management_gui
                 UserID = uid,
                 Password = password,
                 Port = port,
-                Database = database
+                Database = database,
             };
 
             connection = new MySqlConnection(builder.ConnectionString);
+
+            try
+            {
+                connection.Open();
+            } 
+            catch (MySqlException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
 
-        // open connection to database
+        // Open connection to database
         public bool OpenConnection()
         {
             try
@@ -169,27 +178,26 @@ namespace therapy_management_gui
 
         public DataTable Select(String query)
         {
-
             DataTable dt = new DataTable();
 
-            if (this.OpenConnection() == true)
+            if (OpenConnection() == true)
             {
                 //Create Command
                 MySqlCommand cmd = new MySqlCommand(query, connection);
-                //Create a data reader and Execute the command
 
+                //Create a data reader and Execute the command
                 MySqlDataReader dataReader = cmd.ExecuteReader();
                 dt.Load(dataReader);
                 dataReader.Close();
 
                 //close Connection
                 this.CloseConnection();
-            }
-
+            } 
             else {
                 MessageBox.Show("Keine Connection");
             };
-                return dt;
+           
+            return dt;
 
         }
 
