@@ -1,9 +1,11 @@
 ﻿using Google.Protobuf.WellKnownTypes;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,12 +72,43 @@ namespace therapy_management_gui
             if (result == DialogResult.OK)
             {
                 Patient patient = newPatientForm.Result;
+                string query = "";
 
-                string query = $"INSERT INTO {Constants.DATABASE_TABLE_PATIENTS} (first_name, last_name, phone, email, birth_date) VALUES" +
-                               $"('{patient.firstName}', '{patient.lastName}', '{patient.tel}', '{patient.eMail}', '{patient.birthDate.ToString("yyyy-MM-dd")}')";
+                // Check if filePath exists
+                // If Not, insert Patient normally
+                if (patient.filePath == "")
+                {
+                    query = $@"INSERT INTO {Constants.DATABASE_TABLE_PATIENTS} (first_name, last_name, phone, email, birth_date) VALUES 
+                              ('{patient.firstName}', '{patient.lastName}', '{patient.tel}', '{patient.eMail}', '{patient.birthDate.ToString("yyyy-MM-dd")}')";
 
-                databaseConnection.ExecuteSQLStatement(query);
+                    databaseConnection.ExecuteSQLStatement(query);
+                } 
+                // if Yes, Then covert image to binary and insert with Photo
+                else
+                {
+                    try
+                    {
+
+                        query = $@"INSERT INTO {Constants.DATABASE_TABLE_PATIENTS} (first_name, last_name, phone, email, birth_date, photo) VALUES 
+                                         ('{patient.firstName}', '{patient.lastName}', '{patient.tel}', '{patient.eMail}', '{patient.birthDate.ToString("yyyy-MM-dd")}', @photo)";
+
+                        var command = new MySqlCommand(query, databaseConnection.Connection);
+                        command.Parameters.Add("@photo", MySqlDbType.MediumBlob);
+                        command.Parameters["@photo"].Value = readImageAndConvertToBinary(patient.filePath);
+
+                        if (databaseConnection.ExecuteMySQLCommand(command) > 0)
+                        {
+                            MessageBox.Show("Saving Successful");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }  
             }
+
+            newPatientForm.Dispose();
         }
 
         // Search Functionality
@@ -98,6 +131,18 @@ namespace therapy_management_gui
 
             selectDataThenPopulateView(patientsQuery, dgv_patients);
             selectDataThenPopulateView(caseQuery, dgv_cases);
+        }
+
+        private byte[] readImageAndConvertToBinary (string filePath)
+        {
+            FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            BinaryReader br = new BinaryReader(fs);
+            byte[] ImageData = br.ReadBytes((int)fs.Length);
+
+            fs.Close();
+            br.Close();
+
+            return ImageData;
         }
     }
 }

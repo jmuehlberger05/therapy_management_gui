@@ -33,9 +33,7 @@ namespace therapy_management_gui
         {
             // Create FileExplorer Instance
             OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            openFileDialog.Title = "Select a File";
-            //openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*"; // Example filter
+            openFileDialog.Title = "Suche ein Foto aus";
 
             // open Explorer
             DialogResult result = openFileDialog.ShowDialog();

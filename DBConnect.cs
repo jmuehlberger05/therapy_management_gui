@@ -174,6 +174,17 @@ namespace therapy_management_gui
                 this.CloseConnection();
             }
         }
+        public int ExecuteMySQLCommand(MySqlCommand command)
+        {
+            if (this.OpenConnection() == true)
+            {
+                int rowsAffected =  command.ExecuteNonQuery();
+                this.CloseConnection();
+                return rowsAffected;
+            }
+
+            return 0;
+        }
 
         public DataTable Select(String query)
         {
