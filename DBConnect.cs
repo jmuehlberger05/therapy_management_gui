@@ -115,9 +115,8 @@ namespace therapy_management_gui
         }
 
         //Insert statement
-        public void Insert()
+        public void Insert(string query)
         {
-            string query = "INSERT INTO tableinfo (name, age) VALUES('John Smith', '33')";
 
             //open connection
             if (this.OpenConnection() == true)
@@ -134,9 +133,8 @@ namespace therapy_management_gui
         }
 
         //Update statement
-        public void Update()
+        public void Update(string query)
         {
-            string query = "UPDATE tableinfo SET name='Joe', age='22' WHERE name='John Smith'";
 
             //Open connection
             if (this.OpenConnection() == true)
@@ -157,10 +155,18 @@ namespace therapy_management_gui
         }
 
         //Delete statement
-        public void Delete()
+        public void Delete(string query)
         {
-            string query = "DELETE FROM tableinfo WHERE name='John Smith'";
+            if (this.OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.ExecuteNonQuery();
+                this.CloseConnection();
+            }
+        }
 
+        public void ExecuteSQLStatement(string query)
+        {
             if (this.OpenConnection() == true)
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);

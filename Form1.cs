@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Google.Protobuf.WellKnownTypes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -50,19 +51,53 @@ namespace therapy_management_gui
         {
             DataTable data = databaseConnection.Select(query);
 
-            if (data.Rows.Count > 0)
-            {
-                populateDataGridView(view, data);
-                return data;
-            }
-            else return new DataTable();
-
+            populateDataGridView(view, data);
+            return data;
         }
 
         // Fill DataGridView with Data
         private void populateDataGridView (DataGridView view, DataTable data)
         {
             view.DataSource = data;
+        }
+
+        // Add new Patient to Database
+        private void btn_add_patient_Click(object sender, EventArgs e)
+        {
+            NewPatientForm newPatientForm = new NewPatientForm();
+            DialogResult result = newPatientForm.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                Patient patient = newPatientForm.Result;
+
+                string query = $"INSERT INTO {Constants.DATABASE_TABLE_PATIENTS} (first_name, last_name, phone, email, birth_date) VALUES" +
+                               $"('{patient.firstName}', '{patient.lastName}', '{patient.tel}', '{patient.eMail}', '{patient.birthDate.ToString("yyyy-MM-dd")}')";
+
+                databaseConnection.ExecuteSQLStatement(query);
+            }
+        }
+
+        // Search Functionality
+        private void bt_search_Click(object sender, EventArgs e)
+        {
+            // Searches for a simple string in tables "patients" and "cases" then displays the results
+
+            string searchTerm = tb_search.Text;
+
+            string patientsQuery = $@"SELECT id, first_name, last_name, phone, email, birth_date FROM {Constants.DATABASE_TABLE_PATIENTS} 
+                                      WHERE first_name LIKE '%{searchTerm}%' 
+                                      OR last_name LIKE '%{searchTerm}%';";
+
+            string caseQuery = $@"SELECT c.id, c.title AS titel, c.description AS beschreibung, CONCAT(p.first_name, ' ', p.last_name) AS patient, c.n_sessions AS termine 
+                                  FROM {Constants.DATABASE_TABLE_CASES} c 
+                                  JOIN {Constants.DATABASE_TABLE_PATIENTS} p ON c.patient_id = p.id
+                                  WHERE c.title LIKE '%{searchTerm}%' 
+                                  OR c.description LIKE '%{searchTerm}%' 
+                                  OR CONCAT(p.first_name, ' ', p.last_name) LIKE '%{searchTerm}%';";
+
+            selectDataThenPopulateView(patientsQuery, dgv_patients);
+            selectDataThenPopulateView(caseQuery, dgv_cases);
         }
     }
 }

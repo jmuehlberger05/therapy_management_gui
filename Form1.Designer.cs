@@ -35,6 +35,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.btn_add_patient = new System.Windows.Forms.Button();
             this.btn_refresh_patients = new System.Windows.Forms.Button();
             this.dgv_patients = new System.Windows.Forms.DataGridView();
             this.label2 = new System.Windows.Forms.Label();
@@ -74,17 +75,18 @@
             // 
             // bt_search
             // 
-            this.bt_search.Location = new System.Drawing.Point(1679, 41);
+            this.bt_search.Location = new System.Drawing.Point(1679, 36);
             this.bt_search.Name = "bt_search";
             this.bt_search.Size = new System.Drawing.Size(129, 49);
             this.bt_search.TabIndex = 5;
             this.bt_search.Text = "search";
             this.bt_search.UseVisualStyleBackColor = true;
+            this.bt_search.Click += new System.EventHandler(this.bt_search_Click);
             // 
             // tb_search
             // 
             this.tb_search.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tb_search.Location = new System.Drawing.Point(1416, 46);
+            this.tb_search.Location = new System.Drawing.Point(1416, 43);
             this.tb_search.Name = "tb_search";
             this.tb_search.Size = new System.Drawing.Size(245, 35);
             this.tb_search.TabIndex = 2;
@@ -94,7 +96,7 @@
             this.label1.AutoEllipsis = true;
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(317, 50);
+            this.label1.Location = new System.Drawing.Point(319, 50);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(250, 32);
             this.label1.TabIndex = 1;
@@ -111,6 +113,7 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.White;
+            this.panel3.Controls.Add(this.btn_add_patient);
             this.panel3.Controls.Add(this.btn_refresh_patients);
             this.panel3.Controls.Add(this.dgv_patients);
             this.panel3.Controls.Add(this.label2);
@@ -118,6 +121,16 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(800, 908);
             this.panel3.TabIndex = 3;
+            // 
+            // btn_add_patient
+            // 
+            this.btn_add_patient.Location = new System.Drawing.Point(425, 828);
+            this.btn_add_patient.Name = "btn_add_patient";
+            this.btn_add_patient.Size = new System.Drawing.Size(340, 49);
+            this.btn_add_patient.TabIndex = 5;
+            this.btn_add_patient.Text = "Neuen Patienten anlegen";
+            this.btn_add_patient.UseVisualStyleBackColor = true;
+            this.btn_add_patient.Click += new System.EventHandler(this.btn_add_patient_Click);
             // 
             // btn_refresh_patients
             // 
@@ -138,7 +151,7 @@
             this.dgv_patients.RowHeadersVisible = false;
             this.dgv_patients.RowHeadersWidth = 82;
             this.dgv_patients.RowTemplate.Height = 33;
-            this.dgv_patients.Size = new System.Drawing.Size(727, 774);
+            this.dgv_patients.Size = new System.Drawing.Size(727, 706);
             this.dgv_patients.TabIndex = 3;
             // 
             // label2
@@ -229,13 +242,14 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridView dgv_patients;
-        private System.Windows.Forms.Button btn_refresh_patients;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Button btn_refresh_cases;
         private System.Windows.Forms.DataGridView dgv_cases;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button bt_search;
         private System.Windows.Forms.TextBox tb_search;
+        private System.Windows.Forms.Button btn_add_patient;
+        private System.Windows.Forms.Button btn_refresh_patients;
     }
 }
 
