@@ -26,15 +26,17 @@ namespace therapy_management_gui
         private string uid;
         private string password;
 
-        //Constructor
+        // Constructor
         public DBConnect()
         {
+            // Constants from Constants.cs
             server = Constants.MYSQL_INSTANCE_HOST;
             uid = Constants.MYSQL_INSTANCE_UID;
             port = Constants.MYSQL_INSTANCE_PORT;
             password = Constants.MYSQL_INSTANCE_PASSWORD;
             database = Constants.MYSQL_INSTANCE_DATABASE;
 
+            // Init Connection (but don't open already)
             Initialize();
         }
 
@@ -47,19 +49,10 @@ namespace therapy_management_gui
                 UserID = uid,
                 Password = password,
                 Port = port,
-                Database = database,
+                Database = database
             };
 
             connection = new MySqlConnection(builder.ConnectionString);
-
-            try
-            {
-                connection.Open();
-            } 
-            catch (MySqlException ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
         }
 
 
@@ -185,10 +178,17 @@ namespace therapy_management_gui
                 //Create Command
                 MySqlCommand cmd = new MySqlCommand(query, connection);
 
-                //Create a data reader and Execute the command
-                MySqlDataReader dataReader = cmd.ExecuteReader();
-                dt.Load(dataReader);
-                dataReader.Close();
+                try
+                {
+                    //Create a data reader and Execute the command
+                    MySqlDataReader dataReader = cmd.ExecuteReader();
+                    dt.Load(dataReader);
+                    dataReader.Close();
+
+                } catch (MySqlException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
 
                 //close Connection
                 this.CloseConnection();

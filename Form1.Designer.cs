@@ -30,6 +30,8 @@
         {
             this.lbl_title = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.bt_search = new System.Windows.Forms.Button();
+            this.tb_search = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -61,12 +63,31 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.bt_search);
+            this.panel1.Controls.Add(this.tb_search);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.lbl_title);
             this.panel1.Location = new System.Drawing.Point(3, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1837, 118);
             this.panel1.TabIndex = 1;
+            // 
+            // bt_search
+            // 
+            this.bt_search.Location = new System.Drawing.Point(1679, 41);
+            this.bt_search.Name = "bt_search";
+            this.bt_search.Size = new System.Drawing.Size(129, 49);
+            this.bt_search.TabIndex = 5;
+            this.bt_search.Text = "search";
+            this.bt_search.UseVisualStyleBackColor = true;
+            // 
+            // tb_search
+            // 
+            this.tb_search.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tb_search.Location = new System.Drawing.Point(1416, 46);
+            this.tb_search.Name = "tb_search";
+            this.tb_search.Size = new System.Drawing.Size(245, 35);
+            this.tb_search.TabIndex = 2;
             // 
             // label1
             // 
@@ -114,6 +135,7 @@
             this.dgv_patients.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_patients.Location = new System.Drawing.Point(38, 103);
             this.dgv_patients.Name = "dgv_patients";
+            this.dgv_patients.RowHeadersVisible = false;
             this.dgv_patients.RowHeadersWidth = 82;
             this.dgv_patients.RowTemplate.Height = 33;
             this.dgv_patients.Size = new System.Drawing.Size(727, 774);
@@ -157,6 +179,7 @@
             this.dgv_cases.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_cases.Location = new System.Drawing.Point(38, 103);
             this.dgv_cases.Name = "dgv_cases";
+            this.dgv_cases.RowHeadersVisible = false;
             this.dgv_cases.RowHeadersWidth = 82;
             this.dgv_cases.RowTemplate.Height = 33;
             this.dgv_cases.Size = new System.Drawing.Size(727, 774);
@@ -211,6 +234,8 @@
         private System.Windows.Forms.Button btn_refresh_cases;
         private System.Windows.Forms.DataGridView dgv_cases;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button bt_search;
+        private System.Windows.Forms.TextBox tb_search;
     }
 }
 
