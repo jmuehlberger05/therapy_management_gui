@@ -153,6 +153,7 @@
             this.dgv_patients.RowTemplate.Height = 33;
             this.dgv_patients.Size = new System.Drawing.Size(727, 706);
             this.dgv_patients.TabIndex = 3;
+            this.dgv_patients.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_patients_CellContentDoubleClick);
             // 
             // label2
             // 

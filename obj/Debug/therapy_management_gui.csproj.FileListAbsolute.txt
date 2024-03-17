@@ -41,3 +41,4 @@
 \\Mac\Home\Documents\Schule\MINF\Projekte\3. Database GUI\therapy_management_gui\obj\Debug\therapy_management_gui.exe
 \\Mac\Home\Documents\Schule\MINF\Projekte\3. Database GUI\therapy_management_gui\obj\Debug\therapy_management_gui.pdb
 \\Mac\Home\Documents\Schule\MINF\Projekte\3. Database GUI\therapy_management_gui\obj\Debug\therapy_management_gui.NewPatientForm.resources
+\\Mac\Home\Documents\Schule\MINF\Projekte\3. Database GUI\therapy_management_gui\obj\Debug\therapy_management_gui.PatientDetailsForm.resources

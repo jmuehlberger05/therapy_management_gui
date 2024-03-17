@@ -1,6 +1,7 @@
 ﻿using Google.Protobuf.WellKnownTypes;
 using MySql.Data.MySqlClient;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -144,5 +145,46 @@ namespace therapy_management_gui
 
             return ImageData;
         }
+
+        private void dgv_patients_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Step 1: Check if the clicked row index is valid (not a header/footer)
+            if (e.RowIndex >= 0)
+            {
+                // Access the DataGridView (assuming 'sender' is of type DataGridView)
+                var dgv = sender as DataGridView;
+
+                if (dgv != null)
+                {
+                    // Step 2: Access the clicked row
+                    var row = dgv.Rows[e.RowIndex];
+
+                    // Example: Retrieve the value of the first cell in the clicked row
+                    // You can replace '0' with the index or name of the column you're interested in
+                    var cellValue = (int)row.Cells[0].Value;
+
+                    DataTable data = databaseConnection.Select($"SELECT * FROM {Constants.DATABASE_TABLE_PATIENTS} WHERE id = {cellValue};");
+
+                    var dataRow = data.Rows[0];
+
+                    PatientData patientData = new PatientData
+                    {
+                        Id = Convert.ToInt32(dataRow["id"]), // Adjust column names as per your database schema
+                        FirstName = dataRow["first_name"].ToString(),
+                        LastName = dataRow["last_name"].ToString(),
+                        EMail = dataRow["email"].ToString(),
+                        Phone = dataRow["phone"].ToString(),
+                        BirthDate = dataRow["birth_date"].ToString(),
+                        Photo = dataRow["photo"] as byte[] // Assuming 'photo' is stored as a byte array in your DB
+                    };
+
+
+                    PatientDetailsForm patientDetails = new PatientDetailsForm(patientData);
+                    patientDetails.Show();
+
+                }
+            }
+        }
+
     }
 }
