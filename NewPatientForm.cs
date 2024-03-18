@@ -13,7 +13,7 @@ namespace therapy_management_gui
 {
     public partial class NewPatientForm : Form
     {
-        public Patient Result;
+        public PatientFormData Result;
         private string filePath = "";
 
         public NewPatientForm()
@@ -26,9 +26,10 @@ namespace therapy_management_gui
 
         private void btn_submit_Click(object sender, EventArgs e)
         {
-            Result = new Patient(tb_first_name.Text, tb_last_name.Text, tb_mail.Text, tb_tel.Text, dtp_birth_date.Value, filePath);
+            Result = new PatientFormData(tb_first_name.Text, tb_last_name.Text, tb_mail.Text, tb_tel.Text, dtp_birth_date.Value, filePath);
         }
 
+        // Open File Explorer and set filePath
         private void btn_file_explorer_Click(object sender, EventArgs e)
         {
             // Create FileExplorer Instance
@@ -42,12 +43,14 @@ namespace therapy_management_gui
             { 
                 filePath = openFileDialog.FileName;
                 string fileContent = File.ReadAllText(filePath);
+                lbl_file_path.Text = filePath;
             }
 
         }
     }
 
-    public class Patient
+    // Class for Formresult from NewPatientForm
+    public class PatientFormData
     {
         public string firstName;
         public string lastName;
@@ -56,7 +59,7 @@ namespace therapy_management_gui
         public DateTime birthDate;
         public string filePath;
 
-        public Patient(string firstName, string lastName, string eMail, string tel, DateTime birthDate, string filePath)
+        public PatientFormData(string firstName, string lastName, string eMail, string tel, DateTime birthDate, string filePath)
         {
             this.firstName = firstName;
             this.lastName = lastName;

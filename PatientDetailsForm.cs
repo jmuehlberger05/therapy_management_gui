@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySqlX.XDevAPI.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,23 +15,40 @@ namespace therapy_management_gui
     public partial class PatientDetailsForm : Form
     {
         public PatientData Patient;
-
+        public PatientFormData UpdateResult;
+        public string filePath = "";
         public PatientDetailsForm(PatientData data)
         {
             InitializeComponent();
             Patient = data;
 
-            this.Name = $"{data.FirstName} {data.LastName}";
+            btn_update.DialogResult = DialogResult.OK;
+            btn_delete.DialogResult = DialogResult.No;
 
-            if (data.Photo != null)
-                pb_patient_details.Image = ConvertBinaryToImage(data.Photo);
         }
 
-        private Image ConvertBinaryToImage(byte[] data)
+        private void PatientDetailsForm_Load(object sender, EventArgs e)
         {
-            MemoryStream buf = new MemoryStream(data);
+            tb_first_name.Text = Patient.FirstName;
+            tb_last_name.Text = Patient.LastName;
+            tb_tel.Text = Patient.Phone;
+            tb_mail.Text = Patient.EMail;
+            dtp_birth_date.Value = DateTime.Parse(Patient.BirthDate);
 
-            return (Image.FromStream(buf));
+            if (Patient.Photo != null)
+                pb_patient_details.Image = Util.ConvertBinaryToImage(Patient.Photo);
+        }
+
+        private void btn_update_Click(object sender, EventArgs e)
+        {
+            UpdateResult = new PatientFormData(tb_first_name.Text, tb_last_name.Text, tb_mail.Text, tb_tel.Text, dtp_birth_date.Value, filePath);
+            this.Close();
+        }
+
+        private void btn_delete_Click(object sender, EventArgs e)
+        {
+            UpdateResult = new PatientFormData(tb_first_name.Text, tb_last_name.Text, tb_mail.Text, tb_tel.Text, dtp_birth_date.Value, filePath);
+            this.Close();
         }
     }
 
@@ -43,7 +61,6 @@ namespace therapy_management_gui
         public string Phone;
         public string BirthDate;
         public byte[] Photo;
-
         public PatientData() { }
     }
 }

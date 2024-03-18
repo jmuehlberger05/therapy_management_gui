@@ -40,6 +40,7 @@
             this.dgv_patients = new System.Windows.Forms.DataGridView();
             this.label2 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.btn_add_case = new System.Windows.Forms.Button();
             this.btn_refresh_cases = new System.Windows.Forms.Button();
             this.dgv_cases = new System.Windows.Forms.DataGridView();
             this.label3 = new System.Windows.Forms.Label();
@@ -81,7 +82,7 @@
             this.bt_search.TabIndex = 5;
             this.bt_search.Text = "search";
             this.bt_search.UseVisualStyleBackColor = true;
-            this.bt_search.Click += new System.EventHandler(this.bt_search_Click);
+            this.bt_search.Click += new System.EventHandler(this.btn_search_Click);
             // 
             // tb_search
             // 
@@ -124,9 +125,9 @@
             // 
             // btn_add_patient
             // 
-            this.btn_add_patient.Location = new System.Drawing.Point(425, 828);
+            this.btn_add_patient.Location = new System.Drawing.Point(454, 828);
             this.btn_add_patient.Name = "btn_add_patient";
-            this.btn_add_patient.Size = new System.Drawing.Size(340, 49);
+            this.btn_add_patient.Size = new System.Drawing.Size(311, 49);
             this.btn_add_patient.TabIndex = 5;
             this.btn_add_patient.Text = "Neuen Patienten anlegen";
             this.btn_add_patient.UseVisualStyleBackColor = true;
@@ -169,6 +170,7 @@
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.White;
+            this.panel4.Controls.Add(this.btn_add_case);
             this.panel4.Controls.Add(this.btn_refresh_cases);
             this.panel4.Controls.Add(this.dgv_cases);
             this.panel4.Controls.Add(this.label3);
@@ -176,6 +178,16 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(800, 908);
             this.panel4.TabIndex = 5;
+            // 
+            // btn_add_case
+            // 
+            this.btn_add_case.Location = new System.Drawing.Point(506, 828);
+            this.btn_add_case.Name = "btn_add_case";
+            this.btn_add_case.Size = new System.Drawing.Size(259, 49);
+            this.btn_add_case.TabIndex = 6;
+            this.btn_add_case.Text = "Neuen Fall anlegen";
+            this.btn_add_case.UseVisualStyleBackColor = true;
+            this.btn_add_case.Click += new System.EventHandler(this.btn_add_case_Click);
             // 
             // btn_refresh_cases
             // 
@@ -196,8 +208,9 @@
             this.dgv_cases.RowHeadersVisible = false;
             this.dgv_cases.RowHeadersWidth = 82;
             this.dgv_cases.RowTemplate.Height = 33;
-            this.dgv_cases.Size = new System.Drawing.Size(727, 774);
+            this.dgv_cases.Size = new System.Drawing.Size(727, 706);
             this.dgv_cases.TabIndex = 3;
+            this.dgv_cases.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_cases_CellContentDoubleClick);
             // 
             // label3
             // 
@@ -251,6 +264,7 @@
         private System.Windows.Forms.TextBox tb_search;
         private System.Windows.Forms.Button btn_add_patient;
         private System.Windows.Forms.Button btn_refresh_patients;
+        private System.Windows.Forms.Button btn_add_case;
     }
 }
 

@@ -44,6 +44,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tb_first_name = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lbl_file_path = new System.Windows.Forms.Label();
             this.btn_file_explorer = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -196,6 +197,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.lbl_file_path);
             this.groupBox2.Controls.Add(this.btn_file_explorer);
             this.groupBox2.Location = new System.Drawing.Point(578, 135);
             this.groupBox2.Name = "groupBox2";
@@ -203,6 +205,16 @@
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Foto";
+            // 
+            // lbl_file_path
+            // 
+            this.lbl_file_path.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.lbl_file_path.Location = new System.Drawing.Point(15, 225);
+            this.lbl_file_path.Name = "lbl_file_path";
+            this.lbl_file_path.Size = new System.Drawing.Size(322, 23);
+            this.lbl_file_path.TabIndex = 3;
+            this.lbl_file_path.Text = "File Path";
+            this.lbl_file_path.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btn_file_explorer
             // 
@@ -224,7 +236,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.panel1);
             this.Name = "NewPatientForm";
-            this.Text = "NewPatientForm";
+            this.Text = "Neuen Patienten erstellen";
             this.panel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -253,5 +265,6 @@
         private System.Windows.Forms.TextBox tb_last_name;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btn_file_explorer;
+        private System.Windows.Forms.Label lbl_file_path;
     }
 }

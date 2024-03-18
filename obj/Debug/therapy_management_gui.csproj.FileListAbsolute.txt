@@ -34,11 +34,13 @@
 \\Mac\Home\Documents\Schule\MINF\Projekte\3. Database GUI\therapy_management_gui\bin\Debug\System.Threading.Tasks.Extensions.xml
 \\Mac\Home\Documents\Schule\MINF\Projekte\3. Database GUI\therapy_management_gui\obj\Debug\therapy_management_gui.csproj.AssemblyReference.cache
 \\Mac\Home\Documents\Schule\MINF\Projekte\3. Database GUI\therapy_management_gui\obj\Debug\therapy_management_gui.Form1.resources
+\\Mac\Home\Documents\Schule\MINF\Projekte\3. Database GUI\therapy_management_gui\obj\Debug\therapy_management_gui.NewCaseForm.resources
+\\Mac\Home\Documents\Schule\MINF\Projekte\3. Database GUI\therapy_management_gui\obj\Debug\therapy_management_gui.NewPatientForm.resources
+\\Mac\Home\Documents\Schule\MINF\Projekte\3. Database GUI\therapy_management_gui\obj\Debug\therapy_management_gui.PatientDetailsForm.resources
 \\Mac\Home\Documents\Schule\MINF\Projekte\3. Database GUI\therapy_management_gui\obj\Debug\therapy_management_gui.Properties.Resources.resources
 \\Mac\Home\Documents\Schule\MINF\Projekte\3. Database GUI\therapy_management_gui\obj\Debug\therapy_management_gui.csproj.GenerateResource.cache
 \\Mac\Home\Documents\Schule\MINF\Projekte\3. Database GUI\therapy_management_gui\obj\Debug\therapy_management_gui.csproj.CoreCompileInputs.cache
 \\Mac\Home\Documents\Schule\MINF\Projekte\3. Database GUI\therapy_management_gui\obj\Debug\therapy_management_gui.csproj.CopyComplete
 \\Mac\Home\Documents\Schule\MINF\Projekte\3. Database GUI\therapy_management_gui\obj\Debug\therapy_management_gui.exe
 \\Mac\Home\Documents\Schule\MINF\Projekte\3. Database GUI\therapy_management_gui\obj\Debug\therapy_management_gui.pdb
-\\Mac\Home\Documents\Schule\MINF\Projekte\3. Database GUI\therapy_management_gui\obj\Debug\therapy_management_gui.NewPatientForm.resources
-\\Mac\Home\Documents\Schule\MINF\Projekte\3. Database GUI\therapy_management_gui\obj\Debug\therapy_management_gui.PatientDetailsForm.resources
+\\Mac\Home\Documents\Schule\MINF\Projekte\3. Database GUI\therapy_management_gui\obj\Debug\therapy_management_gui.EditCaseForm.resources

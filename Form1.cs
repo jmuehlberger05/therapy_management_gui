@@ -17,7 +17,6 @@ namespace therapy_management_gui
     public partial class Form1 : Form
     {
         private DBConnect databaseConnection;
-
         public Form1()
         {
             InitializeComponent();
@@ -28,13 +27,6 @@ namespace therapy_management_gui
         {
             databaseConnection = new DBConnect();
             fetchData();
-        }
-
-        // Fetch the Tables on the Homepage and populate them
-        private void fetchData()
-        {
-            selectDataThenPopulateView(Queries.selectPatientsForView, dgv_patients);
-            selectDataThenPopulateView(Queries.selectCasesForView, dgv_cases);
         }
 
         // Refresh Patients Table
@@ -49,21 +41,6 @@ namespace therapy_management_gui
             selectDataThenPopulateView(Queries.selectCasesForView, dgv_cases);
         }
 
-        // Select Data from Database, then fill it in a DataGridView
-        private DataTable selectDataThenPopulateView(string query, DataGridView view)
-        {
-            DataTable data = databaseConnection.Select(query);
-
-            populateDataGridView(view, data);
-            return data;
-        }
-
-        // Fill DataGridView with Data
-        private void populateDataGridView (DataGridView view, DataTable data)
-        {
-            view.DataSource = data;
-        }
-
         // Add new Patient to Database
         private void btn_add_patient_Click(object sender, EventArgs e)
         {
@@ -72,7 +49,7 @@ namespace therapy_management_gui
 
             if (result == DialogResult.OK)
             {
-                Patient patient = newPatientForm.Result;
+                PatientFormData patient = newPatientForm.Result;
                 string query = "";
 
                 // Check if filePath exists
@@ -95,7 +72,7 @@ namespace therapy_management_gui
 
                         var command = new MySqlCommand(query, databaseConnection.Connection);
                         command.Parameters.Add("@photo", MySqlDbType.MediumBlob);
-                        command.Parameters["@photo"].Value = readImageAndConvertToBinary(patient.filePath);
+                        command.Parameters["@photo"].Value = Util.ReadImageAndConvertToBinary(patient.filePath);
 
                         if (databaseConnection.ExecuteMySQLCommand(command) > 0)
                         {
@@ -110,10 +87,31 @@ namespace therapy_management_gui
             }
 
             newPatientForm.Dispose();
+            fetchData();
+        }
+
+        // Add new Case to Database
+        private void btn_add_case_Click(object sender, EventArgs e)
+        {
+            DataTable patientsTable = databaseConnection.Select(Queries.selectPatientsForSelect);
+            NewCaseForm newCaseForm = new NewCaseForm(ConvertDataTableToDictionary(patientsTable));
+            DialogResult result = newCaseForm.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                CaseFormData caseData = newCaseForm.Result;
+                string query = $@"INSERT INTO cases (patient_id, title, description, n_sessions)
+                                  VALUES ({caseData.PatientId}, '{caseData.Title}', '{caseData.Description}', {caseData.Sessions});";
+
+                databaseConnection.ExecuteSQLStatement(query);
+            }
+
+            newCaseForm.Dispose();
+            fetchData();
         }
 
         // Search Functionality
-        private void bt_search_Click(object sender, EventArgs e)
+        private void btn_search_Click(object sender, EventArgs e)
         {
             // Searches for a simple string in tables "patients" and "cases" then displays the results
 
@@ -134,57 +132,168 @@ namespace therapy_management_gui
             selectDataThenPopulateView(caseQuery, dgv_cases);
         }
 
-        private byte[] readImageAndConvertToBinary (string filePath)
-        {
-            FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-            BinaryReader br = new BinaryReader(fs);
-            byte[] ImageData = br.ReadBytes((int)fs.Length);
-
-            fs.Close();
-            br.Close();
-
-            return ImageData;
-        }
-
+        // Open Patient Details Window on DataGridView Doubleclick
         private void dgv_patients_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Step 1: Check if the clicked row index is valid (not a header/footer)
-            if (e.RowIndex >= 0)
+            // Check if Rowindex is valid
+            if (e.RowIndex <= 0) return;
+            
+            // Access the DataGridView
+            var dgv = sender as DataGridView;
+            if (dgv == null) return;
+                
+            // Access the clicked Row
+            var row = dgv.Rows[e.RowIndex];
+            var cellValue = (int)row.Cells[0].Value;
+
+            // Get specific Data from Database
+            DataTable data = databaseConnection.Select($"SELECT * FROM {Constants.DATABASE_TABLE_PATIENTS} WHERE id = {cellValue};");
+            var dataRow = data.Rows[0];
+
+            // Convert to PatientData
+            PatientData patientData = new PatientData
             {
-                // Access the DataGridView (assuming 'sender' is of type DataGridView)
-                var dgv = sender as DataGridView;
+                Id = Convert.ToInt32(dataRow["id"]), // Adjust column names as per your database schema
+                FirstName = dataRow["first_name"].ToString(),
+                LastName = dataRow["last_name"].ToString(),
+                EMail = dataRow["email"].ToString(),
+                Phone = dataRow["phone"].ToString(),
+                BirthDate = dataRow["birth_date"].ToString(),
+                Photo = dataRow["photo"] as byte[] // Assuming 'photo' is stored as a byte array in your DB
+            };
 
-                if (dgv != null)
-                {
-                    // Step 2: Access the clicked row
-                    var row = dgv.Rows[e.RowIndex];
+            // Show Details Dialog
+            PatientDetailsForm patientDetails = new PatientDetailsForm(patientData);
+            DialogResult result = patientDetails.ShowDialog();
 
-                    // Example: Retrieve the value of the first cell in the clicked row
-                    // You can replace '0' with the index or name of the column you're interested in
-                    var cellValue = (int)row.Cells[0].Value;
+            // "OK" = Update Patient; "No" = Delete Patient
+            if (result == DialogResult.OK)
+            {
+                var newPatientValues = patientDetails.UpdateResult;
+                string updateQuery = $@"UPDATE {Constants.DATABASE_TABLE_PATIENTS}
+                                        SET
+                                            first_name = '{newPatientValues.firstName}',
+                                            last_name = '{newPatientValues.lastName}',
+                                            phone = '{newPatientValues.tel}',
+                                            email = '{newPatientValues.eMail}',
+                                            birth_date = '{newPatientValues.birthDate.ToString("yyyy-MM-dd")}'
+                                        WHERE id = {patientDetails.Patient.Id};";
 
-                    DataTable data = databaseConnection.Select($"SELECT * FROM {Constants.DATABASE_TABLE_PATIENTS} WHERE id = {cellValue};");
-
-                    var dataRow = data.Rows[0];
-
-                    PatientData patientData = new PatientData
-                    {
-                        Id = Convert.ToInt32(dataRow["id"]), // Adjust column names as per your database schema
-                        FirstName = dataRow["first_name"].ToString(),
-                        LastName = dataRow["last_name"].ToString(),
-                        EMail = dataRow["email"].ToString(),
-                        Phone = dataRow["phone"].ToString(),
-                        BirthDate = dataRow["birth_date"].ToString(),
-                        Photo = dataRow["photo"] as byte[] // Assuming 'photo' is stored as a byte array in your DB
-                    };
-
-
-                    PatientDetailsForm patientDetails = new PatientDetailsForm(patientData);
-                    patientDetails.Show();
-
-                }
+                databaseConnection.ExecuteSQLStatement(updateQuery);
+            } 
+            else if (result == DialogResult.No)
+            {
+                string deleteQuery = $"DELETE from {Constants.DATABASE_TABLE_PATIENTS} WHERE id = {patientDetails.Patient.Id};";
+                databaseConnection.ExecuteSQLStatement(deleteQuery);
             }
+
+            patientDetails.Dispose();
+            fetchData();
         }
 
+        // Open CaseDetails on DoubleClick of Table
+        private void dgv_cases_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Check if Rowindex is valid
+            if (e.RowIndex <= 0) return;
+
+            // Access the DataGridView
+            var dgv = sender as DataGridView;
+            if (dgv == null) return;
+
+            // Access the clicked Row
+            var row = dgv.Rows[e.RowIndex];
+            var cellValue = (int)row.Cells[0].Value;
+
+            // Get specific Data from Database
+            DataTable data = databaseConnection.Select($"SELECT * FROM {Constants.DATABASE_TABLE_CASES} WHERE id = {cellValue};");
+            var dataRow = data.Rows[0];
+
+            var caseData = new CaseData
+            {
+                Id = Convert.ToInt32(dataRow["id"]),
+                PatientId = Convert.ToInt32(dataRow["patient_id"]),
+                Title = dataRow["title"].ToString(),
+                Description = dataRow["description"].ToString(),
+                Sessions = Convert.ToInt32(dataRow["n_sessions"]),
+            };
+
+            DataTable patientsTable = databaseConnection.Select(Queries.selectPatientsForSelect);
+
+            EditCaseForm editCaseForm = new EditCaseForm(ConvertDataTableToDictionary(patientsTable), caseData);
+            DialogResult result = editCaseForm.ShowDialog();
+
+            // "OK" = Update Patient; "No" = Delete Patient
+            if (result == DialogResult.OK)
+            {
+                var newCaseValues = editCaseForm.Result;
+
+                string updateQuery = $@"UPDATE {Constants.DATABASE_TABLE_CASES}
+                                        SET
+                                            patient_id = '{newCaseValues.PatientId}',
+                                            title = '{newCaseValues.Title}',
+                                            description = '{newCaseValues.Description}',
+                                            n_sessions = '{newCaseValues.Sessions}'
+                                        WHERE id = {editCaseForm.caseData.Id};";
+
+                databaseConnection.ExecuteSQLStatement(updateQuery);
+            }
+            else if (result == DialogResult.No)
+            {
+                string deleteQuery = $"DELETE from {Constants.DATABASE_TABLE_CASES} WHERE id = {editCaseForm.caseData.Id};";
+                databaseConnection.ExecuteSQLStatement(deleteQuery);
+            }
+
+            fetchData();
+        }
+
+
+        #region Local Utility Functions
+
+
+        // Select Data from Database, then fill it in a DataGridView
+        private DataTable selectDataThenPopulateView(string query, DataGridView view)
+        {
+            DataTable data = databaseConnection.Select(query);
+
+            populateDataGridView(view, data);
+            return data;
+        }
+
+
+        // Fill DataGridView with Data
+        private void populateDataGridView(DataGridView view, DataTable data)
+        {
+            view.DataSource = data;
+        }
+
+        // Fetch the Tables on the Homepage and populate them
+        private void fetchData()
+        {
+            selectDataThenPopulateView(Queries.selectPatientsForView, dgv_patients);
+            selectDataThenPopulateView(Queries.selectCasesForView, dgv_cases);
+        }
+
+        // Convert PatientsTable to Dictionary
+        private Dictionary<int, string> ConvertDataTableToDictionary(DataTable input)
+        {
+            Dictionary<int, string> dict = new Dictionary<int, string>();
+
+            foreach (DataRow row in input.Rows)
+            {
+                int id = Convert.ToInt32(row["id"]);
+                string name = row["name"].ToString();
+
+                if (!dict.ContainsKey(id))
+                {
+                   dict.Add(id, name);
+                }
+            }
+
+            return dict;
+        }
+
+
+        #endregion
     }
 }
